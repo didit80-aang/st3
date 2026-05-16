@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=yes">
+  <meta name="theme-color" content="#dce8e0">
+  <meta name="description" content="SiramTanam - Dashboard IoT Penyiraman Tanaman Otomatis">
+  
+  <!-- PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SiramTanam">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="SiramTanam">
+  
+  <!-- PWA Icons & Manifest -->
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
+  <link rel="shortcut icon" href="./icon-192.png">
+  
+  <!-- Fallback icon jika file belum tersedia -->
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%233d8b6e'/%3E%3Ctext x='50' y='67' font-size='50' text-anchor='middle' fill='white'%3E🌱%3C/text%3E%3C/svg%3E">
+  
+  <title>SiramTanam • Dashboard Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg: #dce8e0; --card: #dce8e0;
+      --accent: #3d8b6e; --accent-light: #5aaa85; --accent-warm: #c8a96e;
+      --text: #2a332e; --text-secondary: #4a5550; --text-muted: #6b7a70;
+      --red: #e05555; --green: #3d8b6e; --blue: #5b8cb8; --amber: #c89540;
+      --btn-off-bg: #bcc9bf;
+      --btn-off-text: #4a5550;
+      --moisture-low: #e05555;
+      --moisture-mid: #e8b84a;
+      --moisture-high: #3d8b6e;
+    }
+    [data-theme="1"] { --bg:#dce8e0; --card:#dce8e0; --accent:#3d8b6e; --accent-light:#5aaa85; --accent-warm:#c8a96e; --text:#2a332e; --text-secondary:#4a5550; --text-muted:#6b7a70; --red:#e05555; --green:#3d8b6e; --blue:#5b8cb8; --amber:#c89540; --btn-off-bg:#bcc9bf; --btn-off-text:#4a5550; --moisture-low:#e05555; --moisture-mid:#e8b84a; --moisture-high:#3d8b6e; }
+    [data-theme="2"] { --bg:#e8ddd0; --card:#e8ddd0; --accent:#8b5e3c; --accent-light:#a0704a; --accent-warm:#c8a070; --text:#2a2218; --text-secondary:#5a4530; --text-muted:#8a7a6a; --red:#c04030; --green:#6b8b3c; --blue:#6b8ba8; --amber:#b88040; --btn-off-bg:#c4b8a8; --btn-off-text:#5a4530; --moisture-low:#c04030; --moisture-mid:#d4a030; --moisture-high:#6b8b3c; }
+    [data-theme="3"] { --bg:#d8dcc8; --card:#d8dcc8; --accent:#5a6b3c; --accent-light:#6a7b4a; --accent-warm:#b8a860; --text:#1a2012; --text-secondary:#3a4a28; --text-muted:#7a856a; --red:#b84030; --green:#5a6b3c; --blue:#5a7b9a; --amber:#a08030; --btn-off-bg:#bcc4a8; --btn-off-text:#3a4a28; --moisture-low:#b84030; --moisture-mid:#c8a030; --moisture-high:#5a6b3c; }
+    [data-theme="4"] { --bg:#e8d5c8; --card:#e8d5c8; --accent:#b8452e; --accent-light:#c85840; --accent-warm:#d89060; --text:#2a1510; --text-secondary:#5a2820; --text-muted:#9a7a6a; --red:#b8452e; --green:#5a8b40; --blue:#5a80a8; --amber:#c87030; --btn-off-bg:#c8b0a0; --btn-off-text:#5a2820; --moisture-low:#b8452e; --moisture-mid:#d4a030; --moisture-high:#5a8b40; }
+    [data-theme="5"] { --bg:#d5d8d4; --card:#d5d8d4; --accent:#5c4a3a; --accent-light:#6a5848; --accent-warm:#b8a090; --text:#1a1816; --text-secondary:#2a2218; --text-muted:#7a7570; --red:#b84535; --green:#4a6b3a; --blue:#4a6888; --amber:#a07040; --btn-off-bg:#b8b8b0; --btn-off-text:#2a2218; --moisture-low:#b84535; --moisture-mid:#c89840; --moisture-high:#4a6b3a; }
+    [data-theme="6"] { --bg:#e8dbcb; --card:#e8dbcb; --accent:#9b6b43; --accent-light:#b88050; --accent-warm:#d8b080; --text:#2a1a10; --text-secondary:#5a3a20; --text-muted:#9a8570; --red:#b84030; --green:#5a8b40; --blue:#5a80a0; --amber:#c08040; --btn-off-bg:#c8b8a0; --btn-off-text:#5a3a20; --moisture-low:#b84030; --moisture-mid:#d49840; --moisture-high:#5a8b40; }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { width:100%; height:100%; overflow:hidden; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg); color: var(--text);
+      background-image: radial-gradient(ellipse at 25% 15%, var(--accent) 0%, transparent 55%), radial-gradient(ellipse at 75% 70%, var(--accent-warm) 0%, transparent 50%);
+      background-size: 100% 100%, 100% 100%;
+      background-blend-mode: overlay;
+      display:flex; align-items:center; justify-content:center;
+      width:100vw; height:100vh; height:100dvh; padding:0;
+      -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased;
+    }
+    .dashboard {
+      width: 100%; max-width: 540px; height: 100vh; height: 100dvh;
+      background: var(--card); display:flex; flex-direction:column;
+      padding: 16px 18px;
+      box-shadow: 10px 10px 24px rgba(61,139,110,0.18), -8px -8px 18px rgba(255,255,255,0.9);
+      overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;
+    }
+    .dashboard::-webkit-scrollbar { width:4px; }
+    .dashboard::-webkit-scrollbar-track { background:transparent; }
+    .dashboard::-webkit-scrollbar-thumb { background:rgba(0,0,0,0.08); border-radius:4px; }
+
+    .header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:12px; flex-shrink:0; }
+    .title-section h1 { font-size: clamp(1.3rem, 5vw, 1.7rem); font-weight:800; color:var(--text); display:flex; align-items:center; gap:7px; }
+    .title-section h1 .logo-icon { width:34px; height:34px; background:linear-gradient(145deg, var(--accent-light), var(--accent)); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1rem; color:white; box-shadow:8px 8px 16px rgba(61,139,110,0.15), -6px -6px 12px rgba(255,255,255,0.85); flex-shrink:0; }
+    .badge-row { display:flex; align-items:center; gap:5px; flex-shrink:0; }
+    .badge { padding:5px 10px; border-radius:100px; font-size:0.57rem; font-weight:600; background:var(--card); white-space:nowrap; display:inline-flex; align-items:center; gap:4px; height:26px; box-shadow:5px 5px 10px rgba(61,139,110,0.08), -3px -3px 6px rgba(255,255,255,0.7); }
+    .broker-badge { color:var(--accent); }
+    .broker-badge.connecting { animation:brokerBlink 1.2s infinite; color:var(--amber); }
+    @keyframes brokerBlink { 0%,100%{opacity:1;} 50%{opacity:0.45;} }
+    .device-badge.online { color:var(--green); }
+    .device-badge.offline { color:var(--red); }
+    .rssi-badge { color:var(--blue); font-family:monospace; font-size:0.5rem; }
+    .settings-icon { cursor:pointer; padding:7px; border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center; box-shadow:5px 5px 10px rgba(61,139,110,0.08), -3px -3px 6px rgba(255,255,255,0.7); transition:all 0.2s; flex-shrink:0; }
+    .settings-icon:active { box-shadow:inset 5px 5px 10px rgba(61,139,110,0.15), inset -3px -3px 6px rgba(255,255,255,0.5); }
+
+    .gauge-card {
+      background:var(--card); border-radius:20px; padding:16px; margin:10px 0;
+      box-shadow:8px 8px 18px rgba(61,139,110,0.15), -6px -6px 14px rgba(255,255,255,0.85);
+      flex-shrink:0; text-align:center;
+    }
+    .gauge-container { position:relative; width:min(200px,50vw); height:min(170px,44vw); margin:0 auto; }
+    .gauge-svg { width:100%; height:100%; overflow:visible; }
+    .gauge-track { stroke:#c4d0c8; stroke-width:20; fill:none; stroke-linecap:round; }
+    .gauge-fill { stroke-width:20; fill:none; stroke-linecap:round; transition:stroke-dashoffset 0.5s ease, stroke 0.4s ease; filter:drop-shadow(0 2px 5px rgba(0,0,0,0.15)); }
+    .gauge-center { position:absolute; top:54%; left:50%; transform:translate(-50%,-50%); text-align:center; }
+    .gauge-value { font-size:clamp(30px,8vw,42px); font-weight:800; color:var(--text); line-height:1; }
+    .gauge-unit { font-size:clamp(11px,3vw,15px); font-weight:600; color:var(--text-muted); }
+    .gauge-label { font-size:9px; font-weight:500; color:var(--text-muted); margin-top:1px; }
+    .gauge-status { font-size:0.58rem; font-weight:600; margin-top:4px; transition:color 0.3s ease; }
+
+    .pump-card {
+      background:var(--card); border-radius:20px; padding:14px 16px; margin:10px 0;
+      box-shadow:8px 8px 18px rgba(61,139,110,0.15), -6px -6px 14px rgba(255,255,255,0.85);
+      flex-shrink:0;
+    }
+    .pump-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+    .pump-status { display:flex; align-items:center; gap:10px; }
+    .pump-image-liquid { width:42px; height:42px; border-radius:50%; position:relative; overflow:hidden; box-shadow:5px 5px 10px rgba(61,139,110,0.1), -3px -3px 6px rgba(255,255,255,0.7); background:rgba(91,140,184,0.02); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .liquid-fill { position:absolute; bottom:0; left:0; width:100%; height:0%; transition:height 0.7s; z-index:1; overflow:hidden; }
+    .wave-surface { position:absolute; top:-6px; left:0; width:200%; height:14px; }
+    .wave-surface svg { width:100%; height:100%; display:block; }
+    .liquid-fill.manual { height:85%; background:linear-gradient(to top, rgba(91,140,184,0.85), rgba(120,170,210,0.6), rgba(160,200,230,0.3)); }
+    .liquid-fill.manual .wave-surface { animation:waveSym 3s ease-in-out infinite; }
+    .liquid-fill.manual .wave-surface svg path { fill:var(--blue); }
+    .liquid-fill.cycle { height:65%; background:linear-gradient(to top, rgba(61,139,110,0.85), rgba(90,170,133,0.6), rgba(130,210,170,0.3)); }
+    .liquid-fill.cycle .wave-surface { animation:waveSym 2s ease-in-out infinite; }
+    .liquid-fill.cycle .wave-surface svg path { fill:var(--accent); }
+    @keyframes waveSym { 0%,100%{transform:translateX(0);} 50%{transform:translateX(-50%);} }
+    .shine-overlay { position:absolute; top:0; left:0; width:100%; height:100%; z-index:3; opacity:0; border-radius:50%; background:radial-gradient(ellipse at 35% 25%, rgba(255,255,255,0.5) 0%, transparent 55%); }
+    .liquid-fill.manual .shine-overlay, .liquid-fill.cycle .shine-overlay { opacity:1; }
+    .pump-icon-svg { position:relative; z-index:4; width:34px; height:34px; display:flex; align-items:center; justify-content:center; }
+    .pump-text .title { font-weight:700; font-size:13px; color:var(--text); }
+    .pump-indicator-simple { display:flex; align-items:center; gap:7px; margin-top:2px; }
+    .indicator-dot { width:9px; height:9px; border-radius:50%; background:var(--red); transition:background 0.3s; box-shadow:2px 2px 3px rgba(0,0,0,0.08); }
+    .indicator-dot.on { background:var(--green); box-shadow:0 0 7px rgba(61,139,110,0.25); }
+    .indicator-dot.cycle { background:var(--green); animation:dotCycleBlink 0.8s infinite; }
+    @keyframes dotCycleBlink { 0%,100%{background:var(--green);box-shadow:0 0 7px rgba(61,139,110,0.25);} 50%{background:var(--amber);box-shadow:0 0 7px var(--amber);} }
+    .indicator-text { font-size:12px; font-weight:600; color:var(--red); transition:color 0.3s; }
+    .indicator-text.on { color:var(--green); }
+    .indicator-text.cycle { color:var(--amber); }
+
+    .btn-momentary {
+      background:var(--card); border:none; padding:12px 18px; border-radius:50px;
+      color:var(--accent); font-weight:700; font-size:14px;
+      display:flex; align-items:center; justify-content:center; gap:8px;
+      transition:all 0.2s;
+      box-shadow:8px 8px 16px rgba(61,139,110,0.15), -6px -6px 12px rgba(255,255,255,0.85);
+      flex:1; min-width:90px; cursor:pointer;
+    }
+    .btn-momentary:active {
+      box-shadow:inset 8px 8px 16px rgba(61,139,110,0.2), inset -6px -6px 12px rgba(255,255,255,0.55);
+      transform:scale(0.96);
+    }
+    .btn-momentary.pumping {
+      background:var(--red); color:white;
+      box-shadow:inset 6px 6px 14px rgba(224,85,85,0.3), inset -4px -4px 10px rgba(255,255,255,0.3);
+      animation:pumpPulse 0.6s infinite;
+    }
+    @keyframes pumpPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.03);} }
+
+    .switch-card {
+      background:var(--card); border-radius:20px; padding:14px 16px; margin:10px 0;
+      box-shadow:8px 8px 18px rgba(61,139,110,0.15), -6px -6px 14px rgba(255,255,255,0.85);
+      flex-shrink:0;
+    }
+    .switch-card .card-title { font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:10px; }
+    .switch-row { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(0,0,0,0.03); gap:8px; }
+    .switch-row:last-child { border-bottom:none; }
+    .switch-label { display:flex; align-items:center; gap:8px; font-weight:600; font-size:0.76rem; color:var(--text-secondary); flex:1; }
+    .switch-label i { color:var(--accent); width:18px; font-size:0.85rem; text-align:center; }
+
+    .btn-leaf-organic {
+      padding: 13px 32px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.72rem;
+      font-weight: 700;
+      min-width: 90px;
+      text-align: center;
+      position: relative;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.3px;
+      border-radius: 40px 8px 40px 8px;
+      background: var(--btn-off-bg);
+      color: var(--btn-off-text);
+      box-shadow: 8px 8px 18px rgba(61,139,110,0.16), -6px -6px 14px rgba(255,255,255,0.85);
+      transition: all 0.5s cubic-bezier(0.34, 1.4, 0.64, 1);
+      flex-shrink: 0;
+    }
+    .btn-leaf-organic.on {
+      background: linear-gradient(160deg, #4a9b72 0%, #3d8b6e 30%, #2e6b52 100%);
+      color: #ffffff;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      border-radius: 8px 40px 8px 40px;
+      box-shadow: inset 8px 8px 18px rgba(0,0,0,0.18), inset -6px -6px 14px rgba(255,255,255,0.12), 0 0 26px rgba(61,139,110,0.38), 0 0 48px rgba(61,139,110,0.18), 5px 5px 16px rgba(46,107,82,0.25);
+      transform: scale(1.04);
+      animation: leafGlow 3.5s ease-in-out infinite;
+    }
+    .btn-leaf-organic:active { transform: scale(0.94); transition: all 0.15s cubic-bezier(0.34, 1.4, 0.64, 1); }
+    .btn-leaf-organic.on:active { transform: scale(0.96); box-shadow: inset 10px 10px 20px rgba(0,0,0,0.25), inset -6px -6px 14px rgba(255,255,255,0.08), 0 0 16px rgba(61,139,110,0.28); }
+    .btn-leaf-organic.waiting { cursor: wait; pointer-events: none; animation: leafPulse 0.9s ease-in-out infinite; }
+    @keyframes leafPulse { 0%,100% { box-shadow: 8px 8px 18px rgba(61,139,110,0.16), -6px -6px 14px rgba(255,255,255,0.85); transform: scale(1); }
+      40% { box-shadow: inset 8px 8px 18px rgba(61,139,110,0.2), inset -6px -6px 14px rgba(255,255,255,0.5); transform: scale(0.94); }
+      70% { box-shadow: 8px 8px 18px rgba(61,139,110,0.16), -6px -6px 14px rgba(255,255,255,0.85); transform: scale(1.02); } }
+    .btn-leaf-organic.just-confirmed { animation: leafPop 0.5s cubic-bezier(0.34, 1.4, 0.64, 1); }
+    @keyframes leafPop { 0% { transform: scale(0.92); } 40% { transform: scale(1.08); } 100% { transform: scale(1); } }
+    @keyframes leafGlow { 0%,100% { box-shadow: inset 8px 8px 18px rgba(0,0,0,0.18), inset -6px -6px 14px rgba(255,255,255,0.12), 0 0 26px rgba(61,139,110,0.38), 0 0 48px rgba(61,139,110,0.18), 5px 5px 16px rgba(46,107,82,0.25); }
+      50% { box-shadow: inset 8px 8px 18px rgba(0,0,0,0.18), inset -6px -6px 14px rgba(255,255,255,0.12), 0 0 36px rgba(61,139,110,0.5), 0 0 60px rgba(61,139,110,0.25), 5px 5px 16px rgba(46,107,82,0.3); } }
+
+    .settings-card {
+      background:var(--card); border-radius:20px; padding:14px 16px; margin:10px 0;
+      box-shadow:8px 8px 18px rgba(61,139,110,0.15), -6px -6px 14px rgba(255,255,255,0.85);
+      flex-shrink:0;
+    }
+    .settings-title { font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-muted); margin-bottom:12px; }
+    .settings-subtitle { font-size:0.58rem; font-weight:700; color:var(--text-muted); margin:12px 0 8px; padding-top:8px; border-top:1px solid rgba(0,0,0,0.04); text-transform:uppercase; letter-spacing:1px; }
+    .input-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; gap:10px; flex-wrap:wrap; }
+    .input-label { font-weight:600; font-size:0.7rem; color:var(--text-secondary); display:flex; align-items:center; gap:6px; white-space:nowrap; }
+    .input-label i { width:14px; font-size:0.78rem; text-align:center; }
+    .input-group {
+      display:flex; align-items:center; gap:0; background:var(--card);
+      border-radius:100px; overflow:hidden; flex-shrink:0;
+      box-shadow:inset 5px 5px 10px rgba(61,139,110,0.1), inset -3px -3px 6px rgba(255,255,255,0.6);
+    }
+    .input-group input {
+      width:48px; padding:8px 4px; border:none; font-weight:700; text-align:center;
+      outline:none; font-family:'Inter',sans-serif; font-size:0.78rem;
+      background:transparent; color:var(--text);
+    }
+    .input-group input.invalid { color:var(--red); }
+    .input-group .unit-badge {
+      background:rgba(61,139,110,0.08); padding:8px 10px;
+      font-size:0.58rem; font-weight:700; color:var(--accent); white-space:nowrap;
+    }
+    .input-group select {
+      padding:8px 20px 8px 6px; border:none; font-weight:700; text-align:center;
+      outline:none; font-family:'Inter',sans-serif; font-size:0.62rem;
+      background:rgba(61,139,110,0.04); color:var(--text-secondary);
+      cursor:pointer; -webkit-appearance:none; appearance:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%233d8b6e'/%3E%3C/svg%3E");
+      background-repeat:no-repeat; background-position:right 5px center;
+    }
+
+    .button-group { display:flex; gap:8px; margin-top:12px; }
+    .btn-sm {
+      background:var(--card); border:none; padding:9px 14px; border-radius:100px;
+      font-weight:600; font-size:0.7rem; display:flex; align-items:center; gap:5px;
+      flex:1; justify-content:center; cursor:pointer;
+      box-shadow:5px 5px 10px rgba(61,139,110,0.08), -3px -3px 6px rgba(255,255,255,0.7);
+      color:var(--text-secondary); transition:all 0.2s;
+    }
+    .btn-sm:active {
+      box-shadow:inset 5px 5px 10px rgba(61,139,110,0.15), inset -3px -3px 6px rgba(255,255,255,0.5);
+      color:var(--accent);
+    }
+    .footer-note { text-align:center; font-size:0.58rem; color:var(--text-muted); margin-top:10px; padding-top:8px; border-top:1px solid rgba(0,0,0,0.04); flex-shrink:0; }
+
+    .theme-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:8px; }
+    .theme-option { padding:12px 8px; border-radius:14px; cursor:pointer; text-align:center; border:3px solid transparent; transition:all 0.3s; box-shadow:5px 5px 10px rgba(61,139,110,0.08), -3px -3px 6px rgba(255,255,255,0.7); }
+    .theme-option:hover { transform:translateY(-2px); }
+    .theme-option.active { border-color:var(--accent); box-shadow:inset 5px 5px 10px rgba(61,139,110,0.15), inset -3px -3px 6px rgba(255,255,255,0.5); }
+    .theme-swatch { width:36px; height:36px; border-radius:50%; margin:0 auto 6px; box-shadow:inset 2px 2px 4px rgba(0,0,0,0.15),inset -1px -1px 3px rgba(255,255,255,0.5); }
+    .theme-name { font-size:0.55rem; font-weight:700; color:var(--text-secondary); }
+    .theme-label { font-size:0.48rem; color:var(--text-muted); margin-top:1px; }
+
+    .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(120px); background:var(--accent); color:white; padding:12px 20px; border-radius:50px; font-size:0.75rem; font-weight:600; z-index:1000; transition:transform 0.35s; white-space:nowrap; box-shadow:0 8px 24px rgba(61,139,110,0.25); }
+    .toast.show { transform:translateX(-50%) translateY(0); }
+    .toast.error { background:var(--red); }
+    .toast.warning { background:var(--amber); color:var(--text); }
+    
+    /* ==================== ANIMASI ELASTIC FALL ==================== */
+    .modal { 
+      display:flex; 
+      position:fixed; 
+      top:0; 
+      left:0; 
+      width:100%; 
+      height:100%; 
+      background:rgba(0,0,0,0); 
+      backdrop-filter:blur(0px); 
+      z-index:1000; 
+      align-items:center; 
+      justify-content:center; 
+      visibility: hidden;
+      transition: background 0.4s ease, backdrop-filter 0.4s ease, visibility 0s 0.4s;
+    }
+    .modal.active { 
+      background:rgba(0,0,0,0.4); 
+      backdrop-filter:blur(5px); 
+      visibility: visible;
+      transition: background 0.4s ease, backdrop-filter 0.4s ease, visibility 0s 0s;
+    }
+    .modal-content { 
+      background:var(--card); 
+      border-radius:28px; 
+      width:92%; 
+      max-width:440px; 
+      padding:20px; 
+      max-height:85vh; 
+      overflow-y:auto; 
+      box-shadow:10px 10px 24px rgba(61,139,110,0.18), -8px -8px 18px rgba(255,255,255,0.9);
+      transform: translateY(-200px) scale(0.8);
+      opacity: 0;
+      transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.4s ease;
+    }
+    .modal.active .modal-content {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+    .modal-header h3 { font-size:1.1rem; font-weight:700; color:var(--text); display:flex; align-items:center; gap:8px; }
+    .modal-close { background:none; border:none; font-size:1.4rem; cursor:pointer; color:var(--text-muted); width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:50%; box-shadow:5px 5px 10px rgba(61,139,110,0.08), -3px -3px 6px rgba(255,255,255,0.7); transition:all 0.2s; }
+    .modal-close:active { box-shadow:inset 5px 5px 10px rgba(61,139,110,0.15), inset -3px -3px 6px rgba(255,255,255,0.5); transform:scale(0.95); }
+    .modal-section { margin-bottom:14px; }
+    .modal-section h4 { font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:8px; }
+    .switch-toggle-row { display:flex; align-items:center; justify-content:space-between; padding:5px 0; cursor:pointer; }
+    .switch-toggle-row label { font-size:0.74rem; font-weight:600; color:var(--text-secondary); display:flex; align-items:center; gap:7px; cursor:pointer; }
+    .toggle-ios-mini { width:40px; height:24px; background:#c5ccc8; border-radius:24px; cursor:pointer; transition:all 0.3s; position:relative; box-shadow:inset 2px 2px 4px rgba(0,0,0,0.08), inset -1px -1px 2px rgba(255,255,255,0.4); }
+    .toggle-ios-mini::after { content:''; position:absolute; top:2px; left:2px; width:20px; height:20px; background:white; border-radius:50%; transition:all 0.3s; box-shadow:2px 2px 3px rgba(0,0,0,0.12); }
+    .toggle-ios-mini.on { background:var(--accent); }
+    .toggle-ios-mini.on::after { left:18px; }
+    .switch-slide-config { overflow:hidden; transition:max-height 0.4s ease-in-out, opacity 0.3s ease, margin 0.3s ease; max-height:0; opacity:0; }
+    .switch-slide-config.open { max-height:320px; opacity:1; margin-top:4px; margin-bottom:8px; }
+    .switch-item-config { background:var(--card); border-radius:14px; padding:12px; box-shadow:inset 5px 5px 10px rgba(61,139,110,0.1), inset -3px -3px 6px rgba(255,255,255,0.6); }
+    .modal-input-row { margin-bottom:8px; }
+    .modal-input-row label { display:block; font-size:0.6rem; font-weight:600; color:var(--text-muted); margin-bottom:3px; text-transform:uppercase; letter-spacing:0.5px; }
+    .modal-input-row input, .modal-input-row select { width:100%; padding:9px 12px; border:none; border-radius:14px; font-family:'Inter',sans-serif; font-size:0.76rem; outline:none; background:var(--card); box-shadow:inset 3px 3px 7px rgba(61,139,110,0.08), inset -2px -2px 5px rgba(255,255,255,0.5); color:var(--text); }
+    .modal-input-row input.invalid, .modal-input-row select.invalid { box-shadow:inset 2px 2px 5px rgba(224,85,85,0.2), inset -1px -1px 3px rgba(255,255,255,0.3); color:var(--red); }
+    .pin-error { font-size:0.52rem; color:var(--red); margin-top:2px; display:none; font-weight:600; }
+    .pin-error.show { display:block; }
+    .modal-note { font-size:0.55rem; color:var(--text-muted); margin-top:3px; }
+    .modal-btn { width:100%; background:var(--accent); color:white; border:none; padding:11px; border-radius:100px; font-weight:700; cursor:pointer; margin-top:4px; box-shadow:8px 8px 16px rgba(61,139,110,0.15), -6px -6px 12px rgba(255,255,255,0.85); transition:all 0.2s; font-size:0.78rem; letter-spacing:0.3px; }
+    .modal-btn:active { box-shadow:inset 8px 8px 16px rgba(61,139,110,0.2), inset -6px -6px 12px rgba(255,255,255,0.55); transform:scale(0.97); }
+
+    @media (max-width:380px) {
+      .dashboard { padding:12px 12px; }
+      .gauge-container { width:160px; height:135px; }
+      .gauge-value { font-size:26px; }
+      .pump-card, .switch-card, .settings-card, .gauge-card { padding:12px; }
+      .btn-momentary { padding:10px 14px; font-size:13px; }
+      .btn-leaf-organic { padding:11px 24px; min-width:75px; font-size:0.66rem; border-radius:34px 7px 34px 7px; }
+      .btn-leaf-organic.on { border-radius:7px 34px 7px 34px; }
+      .input-group input { width:40px; font-size:0.7rem; }
+      .input-group select { font-size:0.55rem; padding:8px 16px 8px 3px; background-position:right 3px center; }
+      .theme-grid { grid-template-columns: repeat(3,1fr); gap:6px; }
+    }
+    @media (min-width:768px) {
+      .dashboard { border-radius:28px; margin:12px; height:auto; max-height:95vh; }
+    }
+  </style>
+</head>
+<body data-theme="1">
+<div class="dashboard" id="dashboard">
+  <div class="header">
+    <div class="title-section"><h1><span class="logo-icon">🌱</span> SiramTanam</h1></div>
+    <div class="badge-row">
+      <div class="badge broker-badge" id="brokerBadge">🔌 Broker</div>
+      <div class="badge device-badge" id="deviceBadge">📡 Device</div>
+      <div class="badge rssi-badge" id="rssiBadge">📶 --</div>
+      <div class="settings-icon" id="settingsIcon"><i class="fas fa-sliders-h" style="color:var(--text-muted);font-size:0.85rem;"></i></div>
+    </div>
+  </div>
+
+  <div class="gauge-card"><div class="gauge-container"><svg class="gauge-svg" viewBox="0 0 200 180" preserveAspectRatio="xMidYMid meet"><path class="gauge-track" d="M 39.9 160.1 A 85 85 0 1 1 160.1 160.1"/><path class="gauge-fill" id="gaugeFill" d="M 39.9 160.1 A 85 85 0 1 1 160.1 160.1" stroke-dasharray="400.55" stroke-dashoffset="400.55"/></svg><div class="gauge-center"><div><span class="gauge-value" id="moistureDisplay">--</span><span class="gauge-unit">%</span></div><div class="gauge-label">Kelembaban Tanah</div></div></div><div class="gauge-status" id="gaugeStatus">--</div></div>
+
+  <div class="pump-card"><div class="pump-row"><div class="pump-status"><div class="pump-image-liquid"><div class="liquid-fill off" id="liquidFill"><div class="wave-surface"><svg viewBox="0 0 200 16" preserveAspectRatio="none"><path d="M0,8 C25,0 50,16 75,8 C100,0 125,16 150,8 C175,0 200,16 200,8 L200,16 L0,16 Z"/></svg></div><div class="shine-overlay"></div></div><div class="pump-icon-svg">
+    <svg viewBox="0 0 100 100" width="34" height="34">
+        <rect x="12" y="82" width="76" height="10" rx="3" fill="#4a7a9a" stroke="#2a4a5a" stroke-width="1.5"/>
+        <rect x="26" y="76" width="48" height="8" rx="2" fill="#3a6a7a" stroke="#2a4a5a" stroke-width="1.2"/>
+        <rect x="12" y="32" width="52" height="44" rx="10" fill="#6ba8d0" stroke="#2a5a7a" stroke-width="2"/>
+        <line x1="18" y1="38" x2="18" y2="68" stroke="#2a5a7a" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="24" y1="38" x2="24" y2="68" stroke="#2a5a7a" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="30" y1="38" x2="30" y2="68" stroke="#2a5a7a" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="36" y1="38" x2="36" y2="68" stroke="#2a5a7a" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="42" y1="38" x2="42" y2="68" stroke="#2a5a7a" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="48" y1="38" x2="48" y2="68" stroke="#2a5a7a" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="54" y1="38" x2="54" y2="68" stroke="#2a5a7a" stroke-width="1.5" stroke-linecap="round"/>
+        <rect x="12" y="30" width="52" height="8" rx="4" fill="#5a98c0" stroke="#2a5a7a" stroke-width="1.5"/>
+        <rect x="20" y="24" width="18" height="8" rx="4" fill="#4a88b0" stroke="#2a5a7a" stroke-width="1.5"/>
+        <rect x="22" y="20" width="14" height="6" rx="3" fill="#3a78a0" stroke="#2a5a7a" stroke-width="1.2"/>
+        <circle cx="72" cy="52" r="20" fill="#6a7a82" stroke="#2a4a5a" stroke-width="2"/>
+        <circle cx="72" cy="52" r="12" fill="#4a5a62" stroke="#2a4a5a" stroke-width="1.5"/>
+        <circle cx="72" cy="52" r="5" fill="#2a3a42"/>
+        <rect x="80" y="30" width="10" height="16" rx="5" fill="#5a6a72" stroke="#2a4a5a" stroke-width="1.5"/>
+        <rect x="74" y="24" width="22" height="8" rx="4" fill="#5a6a72" stroke="#2a4a5a" stroke-width="1.5"/>
+        <rect x="82" y="18" width="8" height="8" rx="4" fill="#4a5a62" stroke="#2a4a5a" stroke-width="1.5"/>
+        <rect x="84" y="54" width="12" height="14" rx="6" fill="#5a6a72" stroke="#2a4a5a" stroke-width="1.5"/>
+        <circle cx="94" cy="61" r="7" fill="#4a5a62" stroke="#2a4a5a" stroke-width="1.5"/>
+        <circle cx="94" cy="61" r="3" fill="#2a3a42"/>
+        <circle cx="64" cy="44" r="2.5" fill="#5a6a72" stroke="#2a4a5a" stroke-width="1"/>
+        <circle cx="64" cy="60" r="2.5" fill="#5a6a72" stroke="#2a4a5a" stroke-width="1"/>
+        <circle cx="80" cy="44" r="2.5" fill="#5a6a72" stroke="#2a4a5a" stroke-width="1"/>
+        <circle cx="80" cy="60" r="2.5" fill="#5a6a72" stroke="#2a4a5a" stroke-width="1"/>
+        <circle cx="26" cy="36" r="1.8" fill="#4a5a62"/>
+        <circle cx="34" cy="36" r="1.8" fill="#4a5a62"/>
+        <circle cx="42" cy="36" r="1.8" fill="#4a5a62"/>
+        <circle cx="50" cy="36" r="1.8" fill="#4a5a62"/>
+    </svg>
+</div></div><div class="pump-text"><div class="title">Pompa Air</div><div class="pump-indicator-simple"><div class="indicator-dot" id="indicatorDot"></div><span class="indicator-text" id="indicatorText">Mati</span></div></div></div><button class="btn-momentary" id="manualPumpBtn"><i class="fas fa-hand-pointer"></i><span id="pumpBtnLabel">Siram</span></button></div></div>
+
+  <div class="switch-card" id="switchCard" style="display:none;"><div class="card-title">🌿 KONTROL TAMBAHAN</div><div id="switchContainer"></div></div>
+
+  <div class="settings-card">
+    <div class="settings-title">⚙️ PENGATURAN IRIGASI</div>
+    <div class="settings-subtitle">🎯 Persentase Pompa</div>
+    <div class="input-row"><div class="input-label"><i class="fas fa-arrow-down" style="color:var(--red);"></i> Persentase Pompa On</div><div class="input-group"><input type="number" id="thresholdOnInput" min="1" max="98" step="1" placeholder="--" inputmode="numeric"><span class="unit-badge">%</span></div></div>
+    <div class="input-row"><div class="input-label"><i class="fas fa-arrow-up" style="color:var(--green);"></i> Persentase Pompa Off</div><div class="input-group"><input type="number" id="thresholdOffInput" min="2" max="99" step="1" placeholder="--" inputmode="numeric"><span class="unit-badge">%</span></div></div>
+    <div class="settings-subtitle">⏱️ Durasi Siklus Siram</div>
+    <div class="input-row"><div class="input-label"><i class="fas fa-play-circle" style="color:var(--green);"></i> Durasi ON</div><div class="input-group"><input type="number" id="timeOnInput" min="0.1" max="86400" step="any" placeholder="--" inputmode="decimal"><select id="timeOnUnit"><option value="1">Detik</option><option value="60">Menit</option><option value="3600">Jam</option></select></div></div>
+    <div class="input-row"><div class="input-label"><i class="fas fa-pause-circle" style="color:var(--amber);"></i> Durasi OFF</div><div class="input-group"><input type="number" id="timeOffInput" min="0.1" max="86400" step="any" placeholder="--" inputmode="decimal"><select id="timeOffUnit"><option value="1">Detik</option><option value="60">Menit</option><option value="3600">Jam</option></select></div></div>
+    <div class="button-group"><button class="btn-sm" id="applyBtn"><i class="fas fa-save"></i> Simpan</button><button class="btn-sm" id="refreshBtn"><i class="fas fa-sync-alt"></i> Refresh</button></div>
+  </div>
+  <div class="footer-note"><i class="fas fa-fingerprint"></i> Manual: Tekan = ON · Lepas = OFF &nbsp;|&nbsp; Auto: Berdasarkan Persentase</div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="modal" id="settingsModal"><div class="modal-content"><div class="modal-header"><h3><i class="fas fa-sliders-h"></i> Pengaturan Dashboard</h3><button class="modal-close" id="closeModalBtn">&times;</button></div><div class="modal-body">
+  <div class="modal-section"><h4>🎨 Tema Warna</h4><div class="theme-grid" id="themeGrid">
+      <div class="theme-option active" data-theme="1" onclick="setTheme(1)"><div class="theme-swatch" style="background:linear-gradient(145deg,#5aaa85,#3d8b6e);"></div><div class="theme-name">Mint Fresh</div><div class="theme-label">Default</div></div>
+      <div class="theme-option" data-theme="2" onclick="setTheme(2)"><div class="theme-swatch" style="background:linear-gradient(145deg,#a0704a,#8b5e3c);"></div><div class="theme-name">Warm Earth</div><div class="theme-label">Kontras ⭐⭐⭐⭐</div></div>
+      <div class="theme-option" data-theme="3" onclick="setTheme(3)"><div class="theme-swatch" style="background:linear-gradient(145deg,#6a7b4a,#5a6b3c);"></div><div class="theme-name">Olive</div><div class="theme-label">Kontras ⭐⭐⭐⭐</div></div>
+      <div class="theme-option" data-theme="4" onclick="setTheme(4)"><div class="theme-swatch" style="background:linear-gradient(145deg,#c85840,#b8452e);"></div><div class="theme-name">Terracotta</div><div class="theme-label">Kontras ⭐⭐⭐⭐⭐</div></div>
+      <div class="theme-option" data-theme="5" onclick="setTheme(5)"><div class="theme-swatch" style="background:linear-gradient(145deg,#6a5848,#5c4a3a);"></div><div class="theme-name">Slate & Sand</div><div class="theme-label">Max Readable</div></div>
+      <div class="theme-option" data-theme="6" onclick="setTheme(6)"><div class="theme-swatch" style="background:linear-gradient(145deg,#b88050,#9b6b43);"></div><div class="theme-name">Sunrise</div><div class="theme-label">Kontras ⭐⭐⭐⭐</div></div>
+  </div></div>
+  <div class="modal-section"><h4>📡 Koneksi</h4><div class="modal-input-row"><label>Timeout Offline (detik)</label><input type="number" id="rssiTimeoutInput" min="5" max="30" step="1" value="10" inputmode="numeric"><div class="modal-note">Device offline jika tidak ada RSSI dalam waktu ini (5-30 detik)</div></div></div>
+  <div class="modal-section"><h4>🎚️ Saklar Tambahan</h4>
+    <div class="switch-toggle-row" id="swToggle1"><label><i class="fas fa-power-off"></i> Saklar 1</label><div class="toggle-ios-mini on" id="sw1EnableToggle"></div></div><div class="switch-slide-config open" id="swSlide1"><div class="switch-item-config"><div class="modal-input-row"><label>Nama</label><input type="text" id="sw1Name" value="Lampu Grow" maxlength="20" placeholder="Nama saklar"></div><div class="modal-input-row"><label>Icon</label><select id="sw1Icon"><option value="fa-lightbulb">💡 Lampu</option><option value="fa-fan">🌀 Kipas</option><option value="fa-sun">☀️ UV</option><option value="fa-temperature-high">🌡️ Heater</option><option value="fa-water">💧 Air</option><option value="fa-bolt">⚡ Listrik</option></select></div><div class="modal-input-row"><label>MQTT Topic</label><input type="text" id="sw1Topic" value="siramtanam/switch/lamp" maxlength="64" placeholder="topic/switch"></div><div class="modal-input-row"><label>GPIO Pin</label><input type="number" id="sw1Pin" value="25" min="0" max="39" inputmode="numeric"><div class="pin-error" id="pinError1">⚠️ Pin tidak boleh sama</div></div></div></div>
+    <div class="switch-toggle-row" id="swToggle2" style="margin-top:3px;"><label><i class="fas fa-power-off"></i> Saklar 2</label><div class="toggle-ios-mini on" id="sw2EnableToggle"></div></div><div class="switch-slide-config open" id="swSlide2"><div class="switch-item-config"><div class="modal-input-row"><label>Nama</label><input type="text" id="sw2Name" value="Kipas Angin" maxlength="20" placeholder="Nama saklar"></div><div class="modal-input-row"><label>Icon</label><select id="sw2Icon"><option value="fa-lightbulb">💡 Lampu</option><option value="fa-fan" selected>🌀 Kipas</option><option value="fa-sun">☀️ UV</option><option value="fa-temperature-high">🌡️ Heater</option><option value="fa-water">💧 Air</option><option value="fa-bolt">⚡ Listrik</option></select></div><div class="modal-input-row"><label>MQTT Topic</label><input type="text" id="sw2Topic" value="siramtanam/switch/fan" maxlength="64" placeholder="topic/switch"></div><div class="modal-input-row"><label>GPIO Pin</label><input type="number" id="sw2Pin" value="26" min="0" max="39" inputmode="numeric"><div class="pin-error" id="pinError2">⚠️ Pin tidak boleh sama</div></div></div></div>
+    <div class="switch-toggle-row" id="swToggle3" style="margin-top:3px;"><label><i class="fas fa-power-off"></i> Saklar 3</label><div class="toggle-ios-mini on" id="sw3EnableToggle"></div></div><div class="switch-slide-config open" id="swSlide3"><div class="switch-item-config"><div class="modal-input-row"><label>Nama</label><input type="text" id="sw3Name" value="UV Lamp" maxlength="20" placeholder="Nama saklar"></div><div class="modal-input-row"><label>Icon</label><select id="sw3Icon"><option value="fa-lightbulb">💡 Lampu</option><option value="fa-fan">🌀 Kipas</option><option value="fa-sun" selected>☀️ UV</option><option value="fa-temperature-high">🌡️ Heater</option><option value="fa-water">💧 Air</option><option value="fa-bolt">⚡ Listrik</option></select></div><div class="modal-input-row"><label>MQTT Topic</label><input type="text" id="sw3Topic" value="siramtanam/switch/uv" maxlength="64" placeholder="topic/switch"></div><div class="modal-input-row"><label>GPIO Pin</label><input type="number" id="sw3Pin" value="27" min="0" max="39" inputmode="numeric"><div class="pin-error" id="pinError3">⚠️ Pin tidak boleh sama</div></div></div></div>
+  </div>
+</div><button class="modal-btn" id="saveSettingsBtn"><i class="fas fa-save"></i> Simpan Pengaturan</button></div></div>
+
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+<script>
+(function() {
+  var $=function(id){return document.getElementById(id);};
+  var BROKER_URL="wss://broker.hivemq.com:8884/mqtt",CLIENT_ID="siram_"+Math.random().toString(16).substring(2,10);
+  var TOPICS={moisture:"siramtanam/sensors/moisture",pumpState:"siramtanam/actuators/pump/state",thresholdOn:"siramtanam/config/threshold_on",thresholdOff:"siramtanam/config/threshold_off",timeOn:"siramtanam/config/time_on",timeOff:"siramtanam/config/time_off",manualPump:"siramtanam/actuators/pump/cmd",deviceStatus:"siramtanam/device/status",deviceRSSI:"siramtanam/device/rssi",requestData:"siramtanam/device/req_data",heartbeat:"siramtanam/device/hb",switchConfig:"siramtanam/config/switch"};
+  var DEFAULT_SWITCHES=[{name:'Lampu Grow',icon:'fa-lightbulb',topic:'siramtanam/switch/lamp',pin:25,state:false,enabled:true},{name:'Kipas Angin',icon:'fa-fan',topic:'siramtanam/switch/fan',pin:26,state:false,enabled:true},{name:'UV Lamp',icon:'fa-sun',topic:'siramtanam/switch/uv',pin:27,state:false,enabled:true}];
+  var switchConfig=JSON.parse(JSON.stringify(DEFAULT_SWITCHES));
+  var mqttClient=null,rssiTimeoutMs=10000,lastRssiTime=null,rssiTimer=null;
+  var brokerConnected=false,deviceOnline=false,initialLoadDone=false;
+  var moisture=null,thresholdOn=null,thresholdOff=null,timeOn=null,timeOff=null;
+  var pumpIsOn=false,pumpCycleActive=false,pumpInOnPhase=false,FULL_DASH=400.55;
+  var feedbackTimers=[null,null,null];
+  var currentTheme=1;
+
+  function getMoistureColor(value) {
+    if (value === null || isNaN(value)) return 'var(--accent)';
+    if (value <= 40) return 'var(--moisture-low)';
+    if (value <= 70) return 'var(--moisture-mid)';
+    return 'var(--moisture-high)';
+  }
+
+  function getMoistureStatusText(value) {
+    if (value === null || isNaN(value)) return '--';
+    if (value <= 40) return '🔴 KERING - Segera Siram';
+    if (value <= 70) return '🟡 LEMBAB - Normal';
+    return '🟢 BASAH - Cukup Air';
+  }
+
+  function secondsToBestUnit(totalSeconds) {
+    if (totalSeconds === null || totalSeconds === undefined || isNaN(totalSeconds)) return {value:'', unit:'1'};
+    var s = parseFloat(totalSeconds);
+    if (s <= 0) return {value:'', unit:'1'};
+    if (s >= 3600 && s % 3600 === 0) return {value: s/3600, unit: '3600'};
+    if (s >= 3600) return {value: (s/3600).toFixed(1), unit: '3600'};
+    if (s >= 60 && s % 60 === 0) return {value: s/60, unit: '60'};
+    if (s >= 60) return {value: (s/60).toFixed(1), unit: '60'};
+    if (Number.isInteger(s)) return {value: s, unit: '1'};
+    return {value: s, unit: '1'};
+  }
+
+  function convertToSeconds(value, unitMultiplier) {
+    var v = parseFloat(String(value).replace(',', '.'));
+    if (isNaN(v)) return NaN;
+    return v * parseInt(unitMultiplier, 10);
+  }
+
+  function updateDurationInputs() {
+    if (timeOn !== null && !isNaN(timeOn)) {
+      var best = secondsToBestUnit(timeOn);
+      $('timeOnInput').value = best.value;
+      $('timeOnUnit').value = best.unit;
+    }
+    if (timeOff !== null && !isNaN(timeOff)) {
+      var best = secondsToBestUnit(timeOff);
+      $('timeOffInput').value = best.value;
+      $('timeOffUnit').value = best.unit;
+    }
+  }
+
+  function onDurationUnitChange(inputId, unitId) {
+    var unitVal = parseInt($(unitId).value, 10);
+    $(inputId).max = 86400 / unitVal;
+  }
+
+  function loadTheme(){try{var t=localStorage.getItem('siramtanam_theme');if(t)currentTheme=parseInt(t,10);}catch(e){currentTheme=1;}applyTheme(currentTheme);}
+  function saveTheme(t){try{localStorage.setItem('siramtanam_theme',t);}catch(e){}}
+  function applyTheme(t){currentTheme=t;document.body.setAttribute('data-theme',t);var meta=document.querySelector('meta[name="theme-color"]');if(meta){var colors={1:'#dce8e0',2:'#e8ddd0',3:'#d8dcc8',4:'#e8d5c8',5:'#d5d8d4',6:'#e8dbcb'};meta.content=colors[t]||'#dce8e0';}}
+  window.setTheme=function(t){applyTheme(t);saveTheme(t);updateThemeSelection();};
+  function updateThemeSelection(){document.querySelectorAll('.theme-option').forEach(function(el){el.classList.remove('active');if(parseInt(el.getAttribute('data-theme'))===currentTheme)el.classList.add('active');});}
+
+  function loadSettings(){try{var t=localStorage.getItem('siramtanam_rssi_timeout');if(t)rssiTimeoutMs=parseInt(t,10)*1000;var sc=localStorage.getItem('siramtanam_switches');if(sc){var saved=JSON.parse(sc);switchConfig=DEFAULT_SWITCHES.map(function(d,i){return saved[i]?Object.assign({},d,saved[i]):Object.assign({},d);});}}catch(e){}}
+  function saveSettings(){try{localStorage.setItem('siramtanam_rssi_timeout',rssiTimeoutMs/1000);localStorage.setItem('siramtanam_switches',JSON.stringify(switchConfig));}catch(e){}}
+  function toast(msg,type){var el=$('toast');el.textContent=msg;el.className='toast';if(type==='error')el.classList.add('error');if(type==='warning')el.classList.add('warning');el.classList.add('show');setTimeout(function(){el.classList.remove('show');},3000);}
+  function brokerConnecting(){$('brokerBadge').className='badge broker-badge connecting';$('brokerBadge').innerHTML='🔄 Broker';}
+  function brokerConnectedUI(){$('brokerBadge').className='badge broker-badge';$('brokerBadge').innerHTML='🟢 Broker';}
+  function brokerOfflineUI(){$('brokerBadge').className='badge broker-badge';$('brokerBadge').innerHTML='🔴 Broker';}
+  function startRssiMonitor(){if(rssiTimer)clearInterval(rssiTimer);rssiTimer=setInterval(function(){if(!brokerConnected||lastRssiTime===null)return;if(Date.now()-lastRssiTime>rssiTimeoutMs&&deviceOnline){deviceOnline=false;$('deviceBadge').className='badge device-badge offline';$('deviceBadge').innerHTML='🔴 Device';$('rssiBadge').innerHTML='📶 --';toast('⚠️ Device Offline','warning');}},2000);}
+  function rssiReceived(rssi){lastRssiTime=Date.now();$('rssiBadge').innerHTML='📶 '+rssi+' dBm';if(!deviceOnline&&brokerConnected){deviceOnline=true;$('deviceBadge').className='badge device-badge online';$('deviceBadge').innerHTML='🟢 Device';if(!initialLoadDone){initialLoadDone=true;setTimeout(requestDeviceData,1000);}}}
+  
+  function updateGauge(){
+    var s=$('gaugeStatus');
+    s.className='gauge-status';
+    if(moisture!==null && thresholdOn!==null && thresholdOff!==null){
+      if(moisture<=thresholdOn){
+        s.textContent='🔴 Kering - Butuh Siram';
+        s.style.color='var(--red)';
+      }else if(moisture>=thresholdOff){
+        s.textContent='🟢 Basah - Tanah Lembab';
+        s.style.color='var(--green)';
+      }else{
+        s.textContent='🟡 Lembab - Normal';
+        s.style.color='var(--amber)';
+      }
+    }else{
+      s.textContent='--';
+      s.style.color='var(--text-muted)';
+    }
+  }
+  
+  function updateGaugeValue(p){
+    if(p===null||isNaN(p)){
+      $('moistureDisplay').innerText='--';
+      $('gaugeFill').style.stroke='var(--accent)';
+      return;
+    }
+    var v=Math.min(100,Math.max(0,p));
+    $('moistureDisplay').innerText=Math.round(v);
+    $('gaugeFill').style.strokeDasharray=FULL_DASH;
+    $('gaugeFill').style.strokeDashoffset=FULL_DASH*(1-v/100);
+    var gaugeColor = getMoistureColor(v);
+    $('gaugeFill').style.stroke = gaugeColor;
+    var statusText = getMoistureStatusText(v);
+    var statusColor = v <= 40 ? 'var(--red)' : (v <= 70 ? 'var(--amber)' : 'var(--green)');
+    var statusEl = $('gaugeStatus');
+    statusEl.textContent = statusText;
+    statusEl.style.color = statusColor;
+    updateGauge();
+  }
+  
+  function updatePumpUI(isOn,cycleActive,inOnPhase){if(isOn!==null)pumpIsOn=isOn;if(cycleActive!==null)pumpCycleActive=cycleActive;if(inOnPhase!==null)pumpInOnPhase=inOnPhase;var fill=$('liquidFill'),dot=$('indicatorDot'),txt=$('indicatorText');fill.classList.remove('manual','cycle','off');dot.classList.remove('on','cycle');txt.classList.remove('on','cycle');if(pumpCycleActive){fill.classList.add('cycle');dot.classList.add('cycle');txt.classList.add('cycle');txt.textContent=pumpInOnPhase?'Nyala':'Mati';}else if(pumpIsOn){fill.classList.add('manual');dot.classList.add('on');txt.classList.add('on');txt.textContent='Nyala';}else{fill.classList.add('off');txt.textContent='Mati';}}
+  function requestDeviceData(){if(!brokerConnected||!mqttClient||!deviceOnline)return;try{mqttClient.publish(TOPICS.requestData,'REQUEST',{qos:1});}catch(e){}}
+  var pumpActive=false;
+  function sendPumpCmd(cmd){if(!deviceOnline||!brokerConnected||!mqttClient)return false;try{mqttClient.publish(TOPICS.manualPump,cmd,{qos:1});return true;}catch(e){return false;}}
+  function pressStart(e){e.preventDefault();if(!deviceOnline||pumpActive)return;pumpActive=true;if(sendPumpCmd('ON')){$('manualPumpBtn').classList.add('pumping');$('pumpBtnLabel').innerHTML='Menyiram';}}
+  function pressEnd(e){e.preventDefault();if(!pumpActive)return;pumpActive=false;if(sendPumpCmd('OFF')){$('manualPumpBtn').classList.remove('pumping');$('pumpBtnLabel').innerHTML='Siram';}}
+  function setupMomentary(){var btn=$('manualPumpBtn');btn.addEventListener('mousedown',pressStart);btn.addEventListener('mouseup',pressEnd);btn.addEventListener('mouseleave',pressEnd);btn.addEventListener('touchstart',pressStart,{passive:false});btn.addEventListener('touchend',pressEnd);btn.addEventListener('touchcancel',pressEnd);}
+
+  function buildSwitches(){var c=$('switchContainer');c.innerHTML='';var any=switchConfig.some(function(s){return s.enabled;});if(!any){$('switchCard').style.display='none';return;}$('switchCard').style.display='block';switchConfig.forEach(function(s,i){if(!s.enabled)return;var r=document.createElement('div');r.className='switch-row';var l=document.createElement('div');l.className='switch-label';l.innerHTML='<i class="fas '+s.icon+'"></i><span>'+s.name+'</span>';var b=document.createElement('button');b.className='btn-leaf-organic';b.id='swBtn'+i;b.textContent=s.state?'ON':'OFF';if(s.state)b.classList.add('on');b.addEventListener('click',function(e){e.stopPropagation();requestSwitch(i);});r.appendChild(l);r.appendChild(b);c.appendChild(r);});}
+  function requestSwitch(i){if(!deviceOnline){toast('⚠️ Device offline','warning');return;}var b=$('swBtn'+i);if(!b)return;b.classList.add('waiting');if(mqttClient&&brokerConnected){var ns=!switchConfig[i].state;mqttClient.publish(switchConfig[i].topic,ns?'ON':'OFF',{qos:1,retain:true});if(feedbackTimers[i])clearTimeout(feedbackTimers[i]);feedbackTimers[i]=setTimeout(function(){var bb=$('swBtn'+i);if(bb&&bb.classList.contains('waiting')){bb.classList.remove('waiting');toast('⚠️ Tidak ada respons dari ESP32','warning');}},4000);}}
+  function receiveSwitchFeedback(i,ns){var b=$('swBtn'+i);if(!b)return;if(feedbackTimers[i]){clearTimeout(feedbackTimers[i]);feedbackTimers[i]=null;}b.classList.remove('waiting');if(switchConfig[i].state!==ns){switchConfig[i].state=ns;b.textContent=ns?'ON':'OFF';if(ns)b.classList.add('on');else b.classList.remove('on');b.classList.add('just-confirmed');setTimeout(function(){b.classList.remove('just-confirmed');},600);saveSettings();}}
+
+  window.toggleSwitchSlide=function(n){var t=$('sw'+n+'EnableToggle'),s=$('swSlide'+n);if(!t||!s)return;if(t.classList.contains('on')){t.classList.remove('on');s.classList.remove('open');}else{t.classList.add('on');s.classList.add('open');}};
+  function validateNumberInput(input,min,max,name){input.addEventListener('input',function(){var v=parseFloat(String(this.value).replace(',','.'));if(this.value!==''&&(isNaN(v)||v<min||v>max)){this.classList.add('invalid');}else{this.classList.remove('invalid');}});input.addEventListener('blur',function(){var v=parseFloat(String(this.value).replace(',','.'));if(this.value!==''&&(isNaN(v)||v<min||v>max)){this.value='';this.classList.add('invalid');toast('⚠️ '+name+' harus '+min+'-'+max,'warning');}else{this.classList.remove('invalid');}});}
+  function validateTextInput(input,maxLen,name){input.addEventListener('input',function(){if(this.value.length>maxLen){this.value=this.value.substring(0,maxLen);}});input.addEventListener('blur',function(){if(this.value.trim()===''){this.value=this.placeholder||name;}});}
+  var pinInputs=[$('sw1Pin'),$('sw2Pin'),$('sw3Pin')],pinErrors=[$('pinError1'),$('pinError2'),$('pinError3')];
+  function validateAllPins(){var pins=pinInputs.map(function(el){return parseInt(el.value,10);});for(var i=0;i<3;i++){var invalid=false;if(isNaN(pins[i])||pins[i]<0||pins[i]>39||pins[i]===2||pins[i]===34)invalid=true;for(var j=0;j<3;j++){if(i!==j&&!isNaN(pins[j])&&pins[i]===pins[j])invalid=true;}if(invalid){pinInputs[i].classList.add('invalid');if(pinErrors[i])pinErrors[i].classList.add('show');}else{pinInputs[i].classList.remove('invalid');if(pinErrors[i])pinErrors[i].classList.remove('show');}}}
+  pinInputs.forEach(function(input){input.addEventListener('input',validateAllPins);input.addEventListener('blur',validateAllPins);});
+  validateNumberInput($('thresholdOnInput'),1,98,'Persentase Pompa On');
+  validateNumberInput($('thresholdOffInput'),2,99,'Persentase Pompa Off');
+
+  function setupSettings(){
+    $('timeOnUnit').addEventListener('change', function() { onDurationUnitChange('timeOnInput', 'timeOnUnit'); });
+    $('timeOffUnit').addEventListener('change', function() { onDurationUnitChange('timeOffInput', 'timeOffUnit'); });
+
+    function validateDurationInput(inputEl, unitEl, name) {
+      inputEl.addEventListener('input', function() {
+        var v = parseFloat(String(this.value).replace(',', '.'));
+        var unit = parseInt(unitEl.value, 10);
+        var maxAllowed = 86400 / unit;
+        if (this.value !== '' && (isNaN(v) || v < 0.001 || v > maxAllowed)) this.classList.add('invalid');
+        else this.classList.remove('invalid');
+      });
+      inputEl.addEventListener('blur', function() {
+        var v = parseFloat(String(this.value).replace(',', '.'));
+        var unit = parseInt(unitEl.value, 10);
+        var maxAllowed = 86400 / unit;
+        if (this.value !== '' && (isNaN(v) || v < 0.001 || v > maxAllowed)) {
+          this.value = ''; this.classList.add('invalid');
+          toast('⚠️ '+name+' harus 0.1-'+maxAllowed.toFixed(1)+' '+(unit===3600?'jam':unit===60?'menit':'detik'), 'warning');
+        } else this.classList.remove('invalid');
+      });
+    }
+    validateDurationInput($('timeOnInput'), $('timeOnUnit'), 'Durasi ON');
+    validateDurationInput($('timeOffInput'), $('timeOffUnit'), 'Durasi OFF');
+
+    $('applyBtn').addEventListener('click', function() {
+      if (!deviceOnline) { toast('⚠️ Device offline', 'warning'); return; }
+      var tOn = parseInt($('thresholdOnInput').value, 10),
+          tOff = parseInt($('thresholdOffInput').value, 10),
+          dOnRaw = parseFloat(String($('timeOnInput').value).replace(',', '.')),
+          dOffRaw = parseFloat(String($('timeOffInput').value).replace(',', '.')),
+          dOnUnit = parseInt($('timeOnUnit').value, 10),
+          dOffUnit = parseInt($('timeOffUnit').value, 10);
+      if (isNaN(tOn)||tOn<1||tOn>98) { toast('⚠️ Persentase Pompa On harus 1-98%','error'); return; }
+      if (isNaN(tOff)||tOff<2||tOff>99) { toast('⚠️ Persentase Pompa Off harus 2-99%','error'); return; }
+      if (tOn>=tOff) { toast('⚠️ Persentase Pompa On < Persentase Pompa Off','error'); return; }
+      if (isNaN(dOnRaw)||dOnRaw<0.001) { toast('⚠️ Durasi ON tidak valid','error'); return; }
+      if (isNaN(dOffRaw)||dOffRaw<0.001) { toast('⚠️ Durasi OFF tidak valid','error'); return; }
+      var dOn=Math.round(convertToSeconds(dOnRaw,dOnUnit)), dOff=Math.round(convertToSeconds(dOffRaw,dOffUnit));
+      if (dOn<1||dOn>86400) { toast('⚠️ Durasi ON harus 1 detik - 24 jam','error'); return; }
+      if (dOff<1||dOff>86400) { toast('⚠️ Durasi OFF harus 1 detik - 24 jam','error'); return; }
+      mqttClient.publish(TOPICS.thresholdOn,String(tOn),{qos:1,retain:true});
+      mqttClient.publish(TOPICS.thresholdOff,String(tOff),{qos:1,retain:true});
+      mqttClient.publish(TOPICS.timeOn,String(dOn),{qos:1,retain:true});
+      mqttClient.publish(TOPICS.timeOff,String(dOff),{qos:1,retain:true});
+      thresholdOn=tOn; thresholdOff=tOff; timeOn=dOn; timeOff=dOff;
+      updateGauge(); updateDurationInputs();
+      toast('✅ Pengaturan tersimpan','success');
+    });
+    $('refreshBtn').addEventListener('click',function(){requestDeviceData();toast('🔄 Refresh...','success');});
+  }
+
+  function setupModal(){
+    for(var i=1;i<=3;i++){(function(n){var r=$('swToggle'+n);if(r)r.addEventListener('click',function(e){e.stopPropagation();window.toggleSwitchSlide(n);});})(i);}
+    $('settingsIcon').addEventListener('click',function(){$('rssiTimeoutInput').value=rssiTimeoutMs/1000;for(var i=1;i<=3;i++){var t=$('sw'+i+'EnableToggle'),s=$('swSlide'+i);if(switchConfig[i-1].enabled){t.classList.add('on');s.classList.add('open');}else{t.classList.remove('on');s.classList.remove('open');}}['sw1','sw2','sw3'].forEach(function(id,idx){var ne=$(id+'Name'),ie=$(id+'Icon'),te=$(id+'Topic'),pe=$(id+'Pin');if(ne)ne.value=switchConfig[idx].name;if(ie)ie.value=switchConfig[idx].icon;if(te)te.value=switchConfig[idx].topic;if(pe)pe.value=switchConfig[idx].pin;});pinErrors.forEach(function(e){e.classList.remove('show');});pinInputs.forEach(function(e){e.classList.remove('invalid');});validateAllPins();updateThemeSelection();$('settingsModal').classList.add('active');});
+    $('closeModalBtn').addEventListener('click',function(){$('settingsModal').classList.remove('active');});
+    $('settingsModal').addEventListener('click',function(e){if(e.target===$('settingsModal'))$('settingsModal').classList.remove('active');});
+    $('saveSettingsBtn').addEventListener('click',function(){var t=parseInt($('rssiTimeoutInput').value,10);if(isNaN(t)||t<5||t>30){toast('⚠️ Timeout harus 5-30 detik','error');return;}rssiTimeoutMs=t*1000;for(var i=1;i<=3;i++){var nm=$('sw'+i+'Name').value.trim();if(nm===''){toast('⚠️ Nama Saklar '+i+' tidak boleh kosong','error');return;}var tp=$('sw'+i+'Topic').value.trim();if(tp===''){toast('⚠️ Topic Saklar '+i+' tidak boleh kosong','error');return;}var pn=parseInt($('sw'+i+'Pin').value,10);if(isNaN(pn)||pn<0||pn>39||pn===2||pn===34){toast('⚠️ Pin GPIO Saklar '+i+' tidak valid','error');return;}}var pins=[parseInt($('sw1Pin').value,10),parseInt($('sw2Pin').value,10),parseInt($('sw3Pin').value,10)];if(pins[0]===pins[1]||pins[0]===pins[2]||pins[1]===pins[2]){toast('⚠️ Pin GPIO tidak boleh sama','error');return;}var oldConfig=JSON.parse(JSON.stringify(switchConfig));['sw1','sw2','sw3'].forEach(function(id,i){switchConfig[i].enabled=$(id+'EnableToggle').classList.contains('on');switchConfig[i].name=$(id+'Name').value.trim();switchConfig[i].icon=$(id+'Icon').value;switchConfig[i].topic=$(id+'Topic').value.trim();switchConfig[i].pin=parseInt($(id+'Pin').value,10);});saveSettings();startRssiMonitor();buildSwitches();if(mqttClient&&brokerConnected){for(var i=0;i<3;i++){var os=oldConfig[i],ns=switchConfig[i];if(os.enabled!==ns.enabled)mqttClient.publish(TOPICS.switchConfig,(i+1)+':enable:'+(ns.enabled?'1':'0'),{qos:1});if(os.pin!==ns.pin)mqttClient.publish(TOPICS.switchConfig,(i+1)+':pin:'+ns.pin,{qos:1});if(os.topic!==ns.topic)mqttClient.publish(TOPICS.switchConfig,(i+1)+':topic:'+ns.topic,{qos:1});}}$('settingsModal').classList.remove('active');toast('✅ Pengaturan tersimpan','success');});}
+  function parseHeartbeat(p){var pts=p.split(':');if(pts.length<7)return;var r=parseInt(pts[2],10);if(!isNaN(r))rssiReceived(r);var m=parseInt(pts[3],10);if(!isNaN(m)&&m>=0&&m<=100){moisture=m;updateGaugeValue(m);}updatePumpUI(parseInt(pts[4],10)===1,pts[6]==='BLINK',parseInt(pts[4],10)===1);for(var i=0;i<3;i++){var idx=pts.indexOf('S'+(i+1));if(idx>0&&idx+1<pts.length){receiveSwitchFeedback(i,parseInt(pts[idx+1],10)===1);}}}
+  function connectMQTT(){if(mqttClient){try{mqttClient.end(true);}catch(e){}}brokerConnecting();mqttClient=mqtt.connect(BROKER_URL,{clientId:CLIENT_ID,clean:true,connectTimeout:10000,reconnectPeriod:5000,keepalive:60});mqttClient.on('connect',function(){brokerConnected=true;brokerConnectedUI();var at=[TOPICS.moisture,TOPICS.pumpState,TOPICS.thresholdOn,TOPICS.thresholdOff,TOPICS.timeOn,TOPICS.timeOff,TOPICS.deviceStatus,TOPICS.deviceRSSI,TOPICS.heartbeat];switchConfig.forEach(function(s){if(s.enabled)at.push(s.topic);});mqttClient.subscribe(at,{qos:1});setTimeout(function(){if(brokerConnected&&!initialLoadDone){initialLoadDone=true;requestDeviceData();}},2000);});mqttClient.on('reconnect',function(){brokerConnected=false;brokerConnecting();});mqttClient.on('offline',function(){brokerConnected=false;brokerOfflineUI();});mqttClient.on('error',function(){brokerConnected=false;brokerOfflineUI();});mqttClient.on('message',function(topic,message){var msg=message.toString().trim();if(!msg)return;for(var i=0;i<switchConfig.length;i++){if(!switchConfig[i].enabled)continue;if(topic===switchConfig[i].topic){receiveSwitchFeedback(i,msg.toUpperCase()==='ON');return;}}switch(topic){case TOPICS.deviceRSSI:var r=parseInt(msg,10);if(!isNaN(r))rssiReceived(r);break;case TOPICS.moisture:var m=parseFloat(msg);if(!isNaN(m)&&m>=0&&m<=100){moisture=m;updateGaugeValue(m);}break;case TOPICS.pumpState:updatePumpUI(msg.toUpperCase()==='ON',null,null);break;case TOPICS.thresholdOn:thresholdOn=parseInt(msg,10);$('thresholdOnInput').value=thresholdOn;updateGauge();break;case TOPICS.thresholdOff:thresholdOff=parseInt(msg,10);$('thresholdOffInput').value=thresholdOff;updateGauge();break;case TOPICS.timeOn:timeOn=parseInt(msg,10);updateDurationInputs();break;case TOPICS.timeOff:timeOff=parseInt(msg,10);updateDurationInputs();break;case TOPICS.deviceStatus:if(msg.toLowerCase()==='online')rssiReceived(parseInt($('rssiBadge').innerText.replace(/[^0-9-]/g,''))||0);break;case TOPICS.heartbeat:parseHeartbeat(msg);break;}});}
+  
+  // ✅ REGISTRASI SERVICE WORKER - Memakai ./sw.js (relative path)
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('./sw.js').then(function(reg) {
+        console.log('✅ Service Worker registered successfully:', reg.scope);
+        // Optional: tampilkan toast sukses
+        // toast('✅ PWA Siap Diinstall', 'success');
+      }).catch(function(err) {
+        console.log('❌ Service Worker registration failed:', err);
+      });
+    });
+  }
+  
+  function init(){
+    loadTheme();loadSettings();updateGaugeValue(null);buildSwitches();setupMomentary();setupSettings();setupModal();connectMQTT();startRssiMonitor();setInterval(function(){if(brokerConnected&&deviceOnline)requestDeviceData();},30000);
+  }
+  window.addEventListener('beforeunload',function(){if(rssiTimer)clearInterval(rssiTimer);if(mqttClient){try{mqttClient.end(true);}catch(e){}}});
+  init();
+})();
+</script>
+</body>
+</html>
